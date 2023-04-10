@@ -43,16 +43,53 @@
 //my first Javascript
 'use strict'
 //VARIABLES
+//elements
 const box = document.querySelector('#click-box');
-var score = 0;
 const scoreDisplay = document.querySelector('.score');
+const timeDisplay = document.querySelector('.time');
+//other variables
+var score = 0;
+var timer; //store our timer
+var gameRunning = false;
+var seconds = 10;
+
+function setTime(){
+//subtract 1 from seconds
+seconds--;
+
+if(seconds == 0){
+   clearInterval(timer);
+   gameRunning = false;
+   box.removeEventListener('click', moveBox);
+   //alert('Game Over');
+   document.querySelector('#game-stage').innerHTML = '<h1>Game Over</h1><div class="start">Start Over?<div>';
+   document.querySelector('.start').onclick = function(){
+      location.reload();
+   }   
+
+
+}
+
+//update time display
+timeDisplay.textContent = seconds; 
+
+}
+
+
+
 //random number generator
 function getRandInt(min = 1, max = 100){
 
   return Math.floor(Math.random() * (max-min +1))+min;
 }
 
+
+
 function moveBox(){
+   if(gameRunning == false){
+     timer = setInterval(setTime, 1000);
+      gameRunning = true;
+   }
 
 score = score+1;
 //alert(score);
